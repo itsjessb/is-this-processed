@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Is It Processed? - Food Processing Myth Buster</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e8f5e9 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .food-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        h1 {
+            color: #2e7d32;
+            font-size: 2em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            color: #558b2f;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+        }
+
+        .input-section {
+            margin-bottom: 40px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 15px 20px;
+            font-size: 1.1em;
+            border: 2px solid #a5d6a7;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            border-color: #4caf50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1);
+        }
+
+        .divider {
+            text-align: center;
+            margin: 25px 0;
+            color: #81c784;
+            font-weight: 600;
+            font-size: 1.1em;
+            position: relative;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background: #c8e6c9;
+        }
+
+        .divider::before {
+            left: 0;
+        }
+
+        .divider::after {
+            right: 0;
+        }
+
+        .upload-area {
+            border: 2px dashed #a5d6a7;
+            border-radius: 10px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f9fdf9;
+            margin-bottom: 20px;
+        }
+
+        .upload-area:hover {
+            border-color: #4caf50;
+            background: #e8f5e9;
+        }
+
+        .upload-area.dragover {
+            border-color: #4caf50;
+            background: #e8f5e9;
+            border-style: solid;
+        }
+
+        .upload-icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .upload-text {
+            color: #558b2f;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .upload-subtext {
+            color: #81c784;
+            font-size: 0.9em;
+        }
+
+        .file-name {
+            color: #2e7d32;
+            font-weight: 600;
+            margin-top: 10px;
+            font-size: 0.95em;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn-container {
+            text-align: center;
+        }
+
+        .result-section {
+            display: none;
+            background: #e8f5e9;
+            border-left: 5px solid #4caf50;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .result-section.show {
+            display: block;
+        }
+
+        .answer {
+            font-size: 1.3em;
+            color: #2e7d32;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .explanation {
+            color: #558b2f;
+            font-size: 1.05em;
+            line-height: 1.6;
+        }
+
+        .reset-btn {
+            background: #66bb6a;
+            padding: 10px 20px;
+            font-size: 0.95em;
+            margin-top: 15px;
+        }
+
+        .reset-btn:hover {
+            background: #5cb860;
+        }
+
+        .share-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: #f1f8e9;
+            border-radius: 10px;
+        }
+
+        .share-btn {
+            background: #7cb342;
+            padding: 12px 25px;
+            font-size: 1em;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .share-btn:hover {
+            background: #689f38;
+        }
+
+        .education-section {
+            margin-top: 50px;
+            padding-top: 40px;
+            border-top: 2px solid #c8e6c9;
+        }
+
+        .education-section h2 {
+            color: #2e7d32;
+            font-size: 1.8em;
+            margin-bottom: 25px;
+        }
+
+        .education-section h3 {
+            color: #388e3c;
+            font-size: 1.3em;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        .education-section p {
+            color: #424242;
+            margin-bottom: 20px;
+            font-size: 1.05em;
+        }
+
+        .sources {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f1f8e9;
+            border-radius: 10px;
+        }
+
+        .sources h3 {
+            margin-top: 0;
+        }
+
+        .sources ul {
+            list-style-position: inside;
+            color: #424242;
+        }
+
+        .sources li {
+            margin-bottom: 10px;
+        }
+
+        .sources a {
+            color: #2e7d32;
+            text-decoration: none;
+            border-bottom: 1px solid #a5d6a7;
+            transition: all 0.3s ease;
+        }
+
+        .sources a:hover {
+            color: #1b5e20;
+            border-bottom-color: #1b5e20;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+
+            h1 {
+                font-size: 1.6em;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            .input-group {
+                flex-direction: column;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            .food-icon {
+                font-size: 50px;
+            }
+
+            .upload-area {
+                padding: 30px 15px;
+            }
+
+            .upload-icon {
+                font-size: 2.5em;
+            }
+
+            .divider::before,
+            .divider::after {
+                width: 35%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="food-icon">🥗</div>
+            <h1>Is It Processed?</h1>
+            <p class="subtitle">Enter any food item to find out if it's processed</p>
+        </div>
+
+        <div class="input-section">
+            <div class="input-group">
+                <input type="text" id="foodInput" placeholder="e.g., apple, chicken breast, potato chips..." />
+            </div>
+
+            <div class="divider">OR</div>
+
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📸</div>
+                <div class="upload-text">Drag & drop your food image here</div>
+                <div class="upload-subtext">or click to browse</div>
+                <div class="file-name" id="fileName"></div>
+            </div>
+            <input type="file" id="fileInput" accept="image/*" />
+
+            <div class="submit-btn-container">
+                <button id="submitBtn">Check It</button>
+            </div>
+
+            <div class="result-section" id="resultSection">
+                <div class="answer">YES!</div>
+                <div class="explanation" id="explanation"></div>
+                <button class="reset-btn" id="resetBtn">Submit Another Food Item</button>
+            </div>
+        </div>
+
+        <div class="share-section">
+            <p style="margin-bottom: 15px; color: #558b2f; font-weight: 600;">Help spread the truth about food processing!</p>
+            <button class="share-btn" id="shareBtn">
+                <span>📤</span> Share This Site
+            </button>
+        </div>
+
+        <div class="education-section">
+            <h2>The Truth About Processed Foods</h2>
+            
+            <p>There's a widespread misconception that "processed" automatically means "unhealthy." The reality is that virtually all foods we consume undergo some form of processing. From the moment a vegetable is harvested, washed, and cut, it has been processed. When you cook an egg or freeze berries, you're processing food. The term "processed food" simply refers to any food that has been altered from its natural state, which includes nearly everything we eat.</p>
+
+            <h3>Understanding the Spectrum of Processing</h3>
+            
+            <p>Not all processing is created equal. Food scientists and nutrition experts distinguish between minimally processed foods (like bagged salad or frozen vegetables), processed foods (like canned beans or cheese), and ultra-processed foods (like soft drinks or packaged snacks with multiple additives). The key difference lies in the extent of modification and the addition of ingredients like preservatives, artificial flavors, and added sugars. While ultra-processed foods have been linked to various health concerns when consumed in excess, many processed foods are nutritious and convenient options that help preserve nutrients and prevent foodborne illness.</p>
+
+            <h3>The European vs. American Food Myth</h3>
+            
+            <p>A common misconception is that European food is inherently "less processed" or "healthier" than American food. This myth often stems from different labeling requirements and ingredient lists rather than actual differences in food processing. For example, Red Dye 40 (Allura Red AC) is frequently cited as "banned in Europe" when it's actually approved by the European Food Safety Authority, though it requires a warning label. European countries simply have different regulatory frameworks and labeling standards, which can make their food appear "cleaner" without necessarily being less processed. Additionally, many European countries don't require the same comprehensive ingredient disclosure on labels, creating an illusion of simplicity. The truth is that both American and European food industries use similar processing techniques, and food safety standards are rigorous in both regions.</p>
+
+            <h3>Why Processing Matters (and Why It Doesn't)</h3>
+            
+            <p>Food processing has enabled safer, more accessible, and more affordable food for billions of people. Pasteurization prevents deadly diseases, freezing preserves nutrients, and fortification addresses nutritional deficiencies. Rather than demonizing all processed foods, nutrition experts recommend focusing on dietary patterns: eating plenty of fruits, vegetables, whole grains, and lean proteins while limiting excessive sodium, added sugars, and saturated fats—regardless of processing level. The goal isn't to avoid all processed foods, but to make informed choices about what we eat and understand that "processed" is not a synonym for "bad."</p>
+
+            <div class="sources">
+                <h3>Credible Sources & Further Reading</h3>
+                <ul>
+                    <li><a href="https://www.hsph.harvard.edu/nutritionsource/processed-foods/" target="_blank">Harvard School of Public Health - Processed Foods and Health</a></li>
+                    <li><a href="https://www.fda.gov/food/food-ingredients-packaging" target="_blank">U.S. Food & Drug Administration - Food Ingredients & Packaging</a></li>
+                    <li><a href="https://www.bmj.com/content/365/bmj.l1451" target="_blank">BMJ: Ultra-processed food intake and mortality (2019 study)</a></li>
+                    <li><a href="https://www.efsa.europa.eu/en/topics/topic/food-additives" target="_blank">European Food Safety Authority - Food Additives</a></li>
+                    <li><a href="https://www.nature.com/articles/s41430-020-00722-1" target="_blank">European Journal of Clinical Nutrition - Processing and nutrition</a></li>
+                    <li><a href="https://www.ift.org/news-and-publications/food-technology-magazine/issues/2021/march/columns/processing-operations-understanding-food-processing" target="_blank">Institute of Food Technologists - Understanding Food Processing</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const responses = [
+            "Yep! Even washing and cutting your salad counts as processing. Unless you're grazing directly in the field?",
+            "Yes, you silly goose (which is also processed when cooked, plucked, and served)!",
+            "Absolutely! Fun fact: freezing, cooking, and even fermenting are all forms of food processing.",
+            "Yes! Did you know that pasteurizing milk is processing? It also saves lives. Processing isn't the enemy!",
+            "You bet! Grinding wheat into flour? That's processing. Been doing it for thousands of years.",
+            "Indeed! Even sun-drying fruit or smoking fish counts as processing. Our ancestors were food processors too.",
+            "Yes! Unless you're eating it straight from the vine/tree/ground without washing it, it's processed.",
+            "Definitely! Canning, freezing, drying—these are all processing methods that actually help preserve nutrients.",
+            "Of course! Roasting coffee beans is processing. Pressing olives into oil is processing. It's everywhere!",
+            "100% yes! The question isn't whether food is processed, but how much and in what way. That's what matters.",
+            "Yes! That looks delicious AND processed!",
+            "Yes! Even if you took this photo at a farmer's market, it's still processed!",
+            "Absolutely! Nice pic, but yes—washing, cutting, or cooking all count as processing!"
+        ];
+
+        const foodInput = document.getElementById('foodInput');
+        const submitBtn = document.getElementById('submitBtn');
+        const resultSection = document.getElementById('resultSection');
+        const explanation = document.getElementById('explanation');
+        const resetBtn = document.getElementById('resetBtn');
+        const shareBtn = document.getElementById('shareBtn');
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const fileName = document.getElementById('fileName');
+
+        let uploadedFile = null;
+
+        // File upload click handler
+        uploadArea.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        // Handle file selection
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                uploadedFile = file;
+                fileName.textContent = `✓ ${file.name}`;
+                foodInput.value = ''; // Clear text input when file is selected
+            }
+        });
+
+        // Drag and drop handlers
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.classList.add('dragover');
+        });
+
+        uploadArea.addEventListener('dragleave', () => {
+            uploadArea.classList.remove('dragover');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                uploadedFile = file;
+                fileName.textContent = `✓ ${file.name}`;
+                foodInput.value = ''; // Clear text input when file is dropped
+            }
+        });
+
+        // Clear file when typing in text input
+        foodInput.addEventListener('input', () => {
+            if (foodInput.value.trim() !== '') {
+                uploadedFile = null;
+                fileName.textContent = '';
+                fileInput.value = '';
+            }
+        });
+
+        function showResult() {
+            const foodText = foodInput.value.trim();
+            
+            if (foodText === '' && !uploadedFile) {
+                alert('Please enter a food item or upload an image!');
+                return;
+            }
+
+            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+            explanation.textContent = randomResponse;
+            resultSection.classList.add('show');
+            
+            // Scroll to result
+            resultSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function resetForm() {
+            foodInput.value = '';
+            uploadedFile = null;
+            fileName.textContent = '';
+            fileInput.value = '';
+            resultSection.classList.remove('show');
+            foodInput.focus();
+        }
+
+        function shareWebsite() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Is It Processed?',
+                    text: 'Think you know what processed food really means? Check this out!',
+                    url: window.location.href
+                }).catch(err => console.log('Error sharing:', err));
+            } else {
+                // Fallback: copy to clipboard
+                navigator.clipboard.writeText(window.location.href).then(() => {
+                    const originalText = shareBtn.innerHTML;
+                    shareBtn.innerHTML = '<span>✓</span> Link Copied!';
+                    setTimeout(() => {
+                        shareBtn.innerHTML = originalText;
+                    }, 2000);
+                });
+            }
+        }
+
+        submitBtn.addEventListener('click', showResult);
+        resetBtn.addEventListener('click', resetForm);
+        shareBtn.addEventListener('click', shareWebsite);
+
+        foodInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                showResult();
+            }
+        });
+
+        // Focus input on load
+        foodInput.focus();
+    </script>
+</body>
+</html>
